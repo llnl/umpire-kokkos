@@ -13,6 +13,10 @@ struct Pool {};
 using PoolSpaceType = UmpireSpace<Kokkos::HIPSpace, Pool>;
 using ViewType = Kokkos::View<double *, PoolSpaceType>;
 KOKKOS_IMPL_HOST_INACCESSIBLE_SHARED_ALLOCATION_SPECIALIZATION(PoolSpaceType);
+#elif defined(KOKKOS_ENABLE_CUDA)
+using PoolSpaceType = UmpireSpace<Kokkos::CudaSpace, Pool>;
+using ViewType = Kokkos::View<double *, PoolSpaceType>;
+KOKKOS_IMPL_HOST_INACCESSIBLE_SHARED_ALLOCATION_SPECIALIZATION(PoolSpaceType);
 #else
 using PoolSpaceType = UmpireSpace<Kokkos::HostSpace, Pool>;
 using ViewType = Kokkos::View<double *, PoolSpaceType>;
@@ -53,7 +57,7 @@ int main(int argc, char *argv[]) {
 }
 
 KOKKOS_IMPL_SHARED_ALLOCATION_RECORD_EXPLICIT_INSTANTIATION(HostSpaceType);
-#ifdef KOKKOS_ENABLE_HIP
+#if defined(KOKKOS_ENABLE_HIP) || defined(KOKKOS_ENABLE_CUDA)
 KOKKOS_IMPL_HOST_INACCESSIBLE_SHARED_ALLOCATION_RECORD_EXPLICIT_INSTANTIATION(PoolSpaceType);
 #else
 KOKKOS_IMPL_SHARED_ALLOCATION_RECORD_EXPLICIT_INSTANTIATION(PoolSpaceType);
