@@ -4,6 +4,9 @@
 #include "umpire/ResourceManager.hpp"
 #include <Kokkos_Core.hpp>
 #include <string>
+#include <cassert>
+#include <concepts>
+#include <optional>
 
 template <typename MemorySpace, typename TagType = void> class UmpireSpace {
 public:
